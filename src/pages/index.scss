@@ -1,0 +1,45 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .popup {
+    padding: 20px;
+    width: 600px;
+    height: 500px;
+    background: #fff;
+
+    div > input {
+      display: block;
+      width: 200px;
+      height: 30px;
+      border: none;
+      outline: none;
+      margin-bottom: 10px;
+
+      button {
+        width: 200px;
+        height: 30px;
+        background: #fff;
+        border: none;
+        outline: none;
+
+        &:hover {
+          background: darken($color: #fff, $amount: 10);
+        }
+      }
+    }
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
