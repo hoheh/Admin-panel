@@ -19,8 +19,6 @@ const Home = () => {
     setPopupVisible(true);
   };
 
-  const handleUpdateData = () => {};
-
   const removeCurrentData = (item) => {
     dispatch(removeDataAdmin(item));
   };
@@ -48,9 +46,7 @@ const Home = () => {
           })}
       </ul>
       <button onClick={handleClick}>Click for add new data</button>
-      {popupVisible && (
-        <NewPopup handleUpdateData={} currentData={currentData} {...filters} />
-      )}
+      {popupVisible && <NewPopup currentData={currentData} {...filters} />}
     </div>
   );
 };

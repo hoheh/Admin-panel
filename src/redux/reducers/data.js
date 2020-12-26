@@ -3,6 +3,7 @@ import {
   GETMOREDATA,
   DELETECURRENTDATA,
   UPDCURRENTDATA,
+  SENDNEWDATA,
 } from '../actions/admin';
 
 const initialState = {
@@ -42,7 +43,7 @@ const data = (state = initialState, action) => {
       return {
         ...state,
         products: {
-          items: state.products.items.filter((item) => item._id !== action._id),
+          items: state.products.items.find((item) => item._id !== action._id),
           count: state.products.count--,
         },
       };
@@ -54,6 +55,14 @@ const data = (state = initialState, action) => {
           items: state.products.items.map((item) => {
             return item._id === action.obj._id ? action.obj : item;
           }),
+        },
+      };
+    case SENDNEWDATA:
+      return {
+        ...state,
+        products: {
+          items: [...state.products.items, action.obj],
+          count: state.products.count++,
         },
       };
     default:

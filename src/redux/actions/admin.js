@@ -6,42 +6,42 @@ export const DELETECURRENTDATA = 'DELETE_CURRENT_DATA';
 export const UPDCURRENTDATA = 'UPD_CURRENT_DATA';
 export const SENDNEWDATA = 'SEND_NEW_DATA';
 
+// * Получение значений с сервера
+
 const setAdminData = ({ products, filters }) => ({
   type: SETADMIN,
   products,
   filters,
 });
-
-const removeCurrentData = ({ _id }) => ({
-  type: DELETECURRENTDATA,
-  _id,
-});
-
-const updCurrentData = (obj) => ({
-  type: UPDCURRENTDATA,
-  obj,
-});
-
-const sendNewData = (obj) => ({
-  type: SENDNEWDATA,
-  obj,
-});
-
 export const fetchData = () => (dispatch) => {
   axios.post('http://localhost:3003/api/admin/').then(({ data }) => {
     dispatch(setAdminData(data));
   });
 };
 
-export const removeDataAdmin = (obj) => (dispatch) => {
-  axios
-    .delete(`http://localhost:3003/api/admin/products?id=${obj._id}`)
-    .then(({ data }) => {
-      console.log(data, obj);
-      dispatch(removeCurrentData(obj));
-    });
+// * POST запрос на добавление нового значения
+
+const sendNewData = (obj) => ({
+  type: SENDNEWDATA,
+  obj,
+});
+export const postNewData = (data) => (dispatch) => {
+  let formData = new FormData();
+  for (let key of Object.keys(data)) {
+    formData.append(key, data[key]);
+  }
+  axios.post(`http://localhost:3003/api/admin/products`, formData).then(({ data }) => {
+    console.log(data);
+    dispatch(sendNewData(data));
+  });
 };
 
+// * PATCH запрос на обновление
+
+const updCurrentData = (obj) => ({
+  type: UPDCURRENTDATA,
+  obj,
+});
 export const fetchUpdCurrentData = (obj) => (dispatch) => {
   axios
     .patch(`http://localhost:3003/api/admin/products?id=${obj._id}`, obj)
@@ -51,9 +51,17 @@ export const fetchUpdCurrentData = (obj) => (dispatch) => {
     });
 };
 
-export const postNewData = (formData, input) => (dispatch) => {
-  // axios.post(`http://localhost:3003/api/admin/products`, formData).then(({ data }) => {
-  //   console.log(data);
-  // });
-  console.log(formData, input);
+// * DELETE запрос на удаление
+
+const removeCurrentData = ({ _id }) => ({
+  type: DELETECURRENTDATA,
+  _id,
+});
+export const removeDataAdmin = (obj) => (dispatch) => {
+  axios
+    .delete(`http://localhost:3003/api/admin/products?id=${obj._id}`)
+    .then(({ data }) => {
+      console.log(data, obj);
+      dispatch(removeCurrentData(obj));
+    });
 };
