@@ -14,6 +14,7 @@ const initialState = {
     types: [],
     manufactured: [],
   },
+  gallery: [],
   isLoaded: false,
 };
 
@@ -27,6 +28,7 @@ const data = (state = initialState, action) => {
           count: action.products.count,
         },
         filters: action.filters,
+        gallery: action.gallery,
         isLoaded: true,
       };
     case GETMOREDATA:

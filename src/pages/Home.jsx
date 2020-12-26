@@ -8,11 +8,59 @@ import { NewPopup } from '../components';
 import './index.scss';
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const { filters, products, gallery, isLoaded } = useSelector(({ data }) => data);
+
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentData, setCurrentData] = React.useState({});
 
-  const dispatch = useDispatch();
-  const { filters, products, isLoaded } = useSelector(({ data }) => data);
+  const filtersHeading = ['Произоводители', 'Типы'];
+  const galleryHeading = ['Причёски', 'Окрашивание', 'Зизи косички'];
+
+  const getData = (headings, obj) => {
+    return headings.map((el, index) => {
+      return {
+        [index]: {
+          item: Object.values(obj)[index],
+          heading: el,
+        },
+      };
+    });
+  };
+
+  const galleryFilter = (arr) => {
+    const obj = {};
+    for (let i = 0; i < 3; i++) {
+      obj[i] = arr.filter((el) => el.type === i);
+    }
+
+    return obj;
+  };
+
+  console.log(getData(galleryHeading, galleryFilter(gallery)));
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'PRODUCTS':
+        return {
+          products: {
+            isProduct: true,
+            items: products.items,
+            count: products.count,
+            heading: 'Товары',
+          },
+        };
+      case 'FILTERS':
+        return {
+          ...getData(filtersHeading, filters),
+        };
+      case 'GALLERY':
+        return {
+          ...getData(galleryHeading, galleryFilter(gallery)),
+        };
+    }
+  };
 
   const selectCurrentData = (currentItem) => {
     setCurrentData((prevState) => ({ ...prevState, ...currentItem }));
@@ -49,7 +97,11 @@ const Home = () => {
       </ul>
       <button onClick={handleClick}>Click for add new data</button>
       {popupVisible && (
-        <NewPopup handleUpdateData={} currentData={currentData} {...filters} />
+        <NewPopup
+          handleUpdateData={handleUpdateData}
+          currentData={currentData}
+          {...filters}
+        />
       )}
     </div>
   );

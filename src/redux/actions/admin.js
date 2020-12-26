@@ -6,10 +6,11 @@ export const DELETECURRENTDATA = 'DELETE_CURRENT_DATA';
 export const UPDCURRENTDATA = 'UPD_CURRENT_DATA';
 export const SENDNEWDATA = 'SEND_NEW_DATA';
 
-const setAdminData = ({ products, filters }) => ({
+const setAdminData = ({ products, filters, gallery }) => ({
   type: SETADMIN,
   products,
   filters,
+  gallery
 });
 
 const removeCurrentData = ({ _id }) => ({
@@ -37,7 +38,6 @@ export const removeDataAdmin = (obj) => (dispatch) => {
   axios
     .delete(`http://localhost:3003/api/admin/products?id=${obj._id}`)
     .then(({ data }) => {
-      console.log(data, obj);
       dispatch(removeCurrentData(obj));
     });
 };
@@ -46,14 +46,13 @@ export const fetchUpdCurrentData = (obj) => (dispatch) => {
   axios
     .patch(`http://localhost:3003/api/admin/products?id=${obj._id}`, obj)
     .then(({ data }) => {
-      console.log(data);
       dispatch(updCurrentData(obj));
     });
 };
 
-export const postNewData = (formData, input) => (dispatch) => {
+export const postNewData = (data) => (dispatch) => {
   // axios.post(`http://localhost:3003/api/admin/products`, formData).then(({ data }) => {
   //   console.log(data);
   // });
-  console.log(formData, input);
+  console.log(data);
 };
